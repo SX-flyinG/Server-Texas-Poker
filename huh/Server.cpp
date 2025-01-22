@@ -17,6 +17,7 @@ using namespace std;
 #include "Registration.h"
 #include "Lobby.h"
 #include "PockerHand.h"
+#include "Game.h"
 
 
 int main() {
