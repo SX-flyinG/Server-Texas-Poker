@@ -4,6 +4,9 @@
 #include <ws2tcpip.h>
 #include <string>
 #include <conio.h>
+#include <vector>
+#include <map>
+#include <algorithm>
 
 #pragma comment(lib, "ws2_32.lib")
 
