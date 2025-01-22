@@ -32,7 +32,7 @@ void MainLobby(SOCKET clientSocket) {
             case '0':
             case '4':
                 send(clientSocket, "Exiting lobby. Goodbye!\n", 24, 0);
-                return; // Завершаем MainLobby
+                return;
             case '1':
                 send(clientSocket, "Starting the game. Get ready!\n", 30, 0);
                 break;
@@ -44,7 +44,7 @@ void MainLobby(SOCKET clientSocket) {
                 break;
             default:
                 send(clientSocket, "Invalid input. Try again.\n", 26, 0);
-                break; // Возвращаемся в начало цикла
+                break; 
         }
     }
 }
