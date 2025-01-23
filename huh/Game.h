@@ -1,9 +1,32 @@
+class CardDeck {
+public:
+    void ShuffleDeck() {
+        // Implement deck shuffling
+    }
+
+    string DealCard() {
+        // Implement card dealing
+        return "Card"; // Placeholder
+    }
+};
+
+class PokerHand {
+public:
+    PokerHand(const vector<string>& hand) {
+        // Implement hand evaluation
+    }
+
+    string EvaluateHand() {
+        // Implement hand evaluation
+        return "High Card"; // Placeholder
+    }
+};
+
 class PokerGame {
 private:
     CardDeck deck;                       // Колода карт
     vector<vector<string>> players;      // Руки игроков
     int numPlayers;                      // Количество игроков
-    string message
 
     // Функция для раздачи карт игрокам
     void DealInitialCards() {
@@ -17,14 +40,14 @@ private:
     // Отображение рук игроков
     void ShowAllHands(SOCKET clientSocket) const {
         for (int i = 0; i < numPlayers; ++i) {
-            message =  "Player " + i + 1 + "'s hand: ";
-            send(clientSocket , message , sizeof(message) , 0);
+            string message = "Player " + to_string(i + 1) + "'s hand: ";
+            send(clientSocket, message.c_str(), message.size(), 0);
             for (const auto& card : players[i]) {
-                mesasge =  card + " | ";
-                send(clientSocket , message , sizeof(message) , 0);
+                message = card + " | ";
+                send(clientSocket, message.c_str(), message.size(), 0);
             }
-            message =  "\n;
-            send(clientSocket , message , sizeof(message) , 0);
+            message = "\n";
+            send(clientSocket, message.c_str(), message.size(), 0);
         }
     }
 
@@ -36,8 +59,9 @@ private:
         for (int i = 0; i < numPlayers; ++i) {
             PokerHand handEvaluator(players[i]);
             string handType = handEvaluator.EvaluateHand();
-            message =  "Player " + (i + 1) + "'s hand type: " + handType + "\n";
-            send(clientSocket , message , sizeof(message) , 0);
+            string message = "Player " + to_string(i + 1) + "'s hand type: " + handType + "\n";
+            send(clientSocket, message.c_str(), message.size(), 0);
+
             // Сравниваем силу комбинации
             if (CompareHands(handType, bestHandType)) {
                 bestHandType = handType;
@@ -45,8 +69,8 @@ private:
             }
         }
 
-        message =  "The winner is Player " + (winnerIndex + 1) + " with a " + bestHandType + "!\n";
-        send(clientSocket , message , sizeof(message) , 0);
+        string message = "The winner is Player " + to_string(winnerIndex + 1) + " with a " + bestHandType + "!\n";
+        send(clientSocket, message.c_str(), message.size(), 0);
     }
 
     // Сравнение комбинаций
@@ -67,10 +91,10 @@ public:
     }
 
     // Запуск игры
-    void StartGame() {
+    void StartGame(SOCKET clientSocket) {
         deck.ShuffleDeck();
         DealInitialCards();
-        ShowAllHands();
-        DetermineWinner();
+        ShowAllHands(clientSocket);
+        DetermineWinner(clientSocket);
     }
 };
