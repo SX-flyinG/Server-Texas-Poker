@@ -1,27 +1,3 @@
-class CardDeck {
-public:
-    void ShuffleDeck() {
-        // Implement deck shuffling
-    }
-
-    string DealCard() {
-        // Implement card dealing
-        return "Card"; // Placeholder
-    }
-};
-
-class PokerHand {
-public:
-    PokerHand(const vector<string>& hand) {
-        // Implement hand evaluation
-    }
-
-    string EvaluateHand() {
-        // Implement hand evaluation
-        return "High Card"; // Placeholder
-    }
-};
-
 class PokerGame {
 private:
     CardDeck deck;                       // Колода карт
