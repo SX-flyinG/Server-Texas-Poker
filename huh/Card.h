@@ -1,3 +1,9 @@
+#include <iostream>
+
+#pragma comment(lib, "ws2_32.lib")
+
+using namespace std;
+
 class Card {
 public:
     string Cards[52]; 

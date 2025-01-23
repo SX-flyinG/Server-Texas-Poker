@@ -17,8 +17,6 @@
 
 using namespace std;
 
-#include "Card.h"
-#include "Deck.h"
 #include "HandsCard.h"
 #include "Registration.h"
 #include "Lobby.h"

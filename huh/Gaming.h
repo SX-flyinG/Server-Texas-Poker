@@ -13,6 +13,13 @@
 #include <random>
 #include <set>
 
+#pragma comment(lib, "ws2_32.lib")
+
+using namespace std;
+
+#include "Card.h"
+#include "Deck.h"
+
 class PokerGame {
 private:
     CardDeck deck;                      // Колода карт

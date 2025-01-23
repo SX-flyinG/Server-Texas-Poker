@@ -1,5 +1,13 @@
 #pragma once
 
+#include <iostream>
+#include <cstdlib>
+
+
+#pragma comment(lib, "ws2_32.lib")
+
+using namespace std;
+
 
 class CardDeck {
     Card card;
