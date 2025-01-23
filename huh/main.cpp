@@ -85,18 +85,11 @@ int main() {
 
     // Handle client registration and logiт
     registration.reg(clientSocket);
-    while (true) {
         
     lobby.MainLobby(clientSocket);
 
     // Start Poker Game
     // Assuming a game with 1 players for simplicity
-    int numPlayers = 1;
-        while(true) {
-        PokerGame pokerGame(numPlayers);
-        pokerGame.StartGame(clientSocket);
-        }
-    }
     closesocket(clientSocket);
     closesocket(serverSocket);
     WSACleanup();
