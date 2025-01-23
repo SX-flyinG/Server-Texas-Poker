@@ -92,9 +92,26 @@ public:
 
     // Запуск игры
     void StartGame(SOCKET clientSocket) {
+        while(true){
         deck.ShuffleDeck();
         DealInitialCards();
         ShowAllHands(clientSocket);
         DetermineWinner(clientSocket);
+        char choice;
+        int bytesReceived = recv(clientSocket, &choice, 1, 0);
+        if (bytesReceived <= 0) {
+                cerr << "Client disconnected or error receiving data" << endl;
+                closesocket(clientSocket);
+                return;
+            }
+
+            switch (choice) {
+                case 27:
+                    return -1;
+                default:
+                    send(clientSocket, "Next Game Starting...", 23 , 0);
+                    break; 
+            }
+        }
     }
 };
