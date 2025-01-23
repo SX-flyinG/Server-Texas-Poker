@@ -29,9 +29,4 @@ public:
         return card.Cards[currentCardIndex++];
     }
 
-    void PrintDeck() const {
-        for (int i = 0; i < 52; ++i) {
-            cout << card.Cards[i] << endl;
-        }
-    }
 };

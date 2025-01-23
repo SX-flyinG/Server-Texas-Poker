@@ -1,12 +1,3 @@
-#pragma once
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <winsock2.h>
-#include <cstring>
-
-using namespace std;
-
 class Registration {
     string username;
     string password;
@@ -15,7 +6,7 @@ class Registration {
 
 public:
     int reg(SOCKET clientSocket);
-    int registration(SOCKET clientSocket);
+    int regIn(SOCKET clientSocket);
     int logIn(SOCKET clientSocket);
 };
 
@@ -37,7 +28,7 @@ int Registration::reg(SOCKET clientSocket) {
     case 0:
         cout << "Client exited." << endl;
     case 1:
-        return registration(clientSocket);
+        return regIn(clientSocket);
     case 2:
         return logIn(clientSocket);
     default:
@@ -46,7 +37,7 @@ int Registration::reg(SOCKET clientSocket) {
 }
 
 /* Handle user registration */
-int Registration::registration(SOCKET clientSocket) {
+int Registration::regIn(SOCKET clientSocket) {
     string prompt = "Enter your username (max 16 characters, no spaces):\n";
     send(clientSocket, prompt.c_str(), prompt.size(), 0);
 

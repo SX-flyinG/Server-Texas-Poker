@@ -7,6 +7,11 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <ctime>
+#include <cstdlib>
+#include <fstream>
+#include <random>
+#include <set>
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -14,10 +19,10 @@ using namespace std;
 
 #include "Card.h"
 #include "Deck.h"
+#include "HandsCard.h"
 #include "Registration.h"
 #include "Lobby.h"
-#include "PockerHand.h"
-#include "Game.h"
+#include "PokerGame.h"
 
 
 int main() {

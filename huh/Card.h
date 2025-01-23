@@ -15,9 +15,4 @@ public:
         }
     }
 
-    void PrintCards() {
-        for (int i = 0; i < 52; i++) {
-            cout << Cards[i] << endl;
-        }
-    }
 };
