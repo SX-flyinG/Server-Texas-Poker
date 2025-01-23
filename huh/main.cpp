@@ -22,7 +22,6 @@ using namespace std;
 #include "HandsCard.h"
 #include "Registration.h"
 #include "Lobby.h"
-#include "PokerGame.h"
 
 
 int main() {

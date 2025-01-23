@@ -133,7 +133,7 @@
   <ItemGroup>
     <ClInclude Include="Card.h" />
     <ClInclude Include="Deck.h" />
-    <ClInclude Include="PokerGame.h" />
+    <ClInclude Include="Gaming.h" />
     <ClInclude Include="Lobby.h" />
     <ClInclude Include="HandsCard.h" />
     <ClInclude Include="Registration.h" />

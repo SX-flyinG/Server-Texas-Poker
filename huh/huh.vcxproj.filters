@@ -32,7 +32,7 @@
     <ClInclude Include="Lobby.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PokerGame.h">
+    <ClInclude Include="Gaming.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HandsCard.h">

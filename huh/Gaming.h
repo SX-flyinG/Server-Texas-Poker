@@ -1,3 +1,18 @@
+#include <iostream>
+#include <cstring>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <string>
+#include <conio.h>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <ctime>
+#include <cstdlib>
+#include <fstream>
+#include <random>
+#include <set>
+
 class PokerGame {
 private:
     CardDeck deck;                      // Колода карт

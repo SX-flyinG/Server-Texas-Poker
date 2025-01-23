@@ -1,6 +1,11 @@
+#include "Gaming.h"
+
 class Lobby {
 public:
     void MainLobby(SOCKET clientSocket) {
+        int numPlayers = 1;
+        PokerGame pokerGame(numPlayers);
+        char choice;
         while (true) {
             string menu =
                 "\t\t\t####  #       #####  #####   #  #  \n"
@@ -22,7 +27,6 @@ public:
 
             send(clientSocket, menu.c_str(), menu.size(), 0);
 
-            char choice;
             int bytesReceived = recv(clientSocket, &choice, 1, 0);
             if (bytesReceived <= 0) {
                 cerr << "Client disconnected or error receiving data" << endl;
@@ -30,8 +34,6 @@ public:
                 return;
             }
 
-            int numPlayers = 1;
-            PokerGame pokerGame(numPlayers);
 
             switch (choice) {
             case '0':
