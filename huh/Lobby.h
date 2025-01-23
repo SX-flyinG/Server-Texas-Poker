@@ -1,15 +1,6 @@
-
-class ILobby {
+class Lobby {
 public:
-    virtual void MainLobby(SOCKET clientSocket) = 0;
-    virtual void Rules(SOCKET clientSocket) = 0;
-    virtual ~ILobby() = default; // Виртуальный деструктор
-};
-
-// Конкретная реализация интерфейса ILobby
-class Lobby : public ILobby {
-public:
-    void MainLobby(SOCKET clientSocket) override {
+    void MainLobby(SOCKET clientSocket) {
         while (true) {
             string menu =
                 "\t\t\t####  #       #####  #####   #  #  \n"
@@ -39,28 +30,32 @@ public:
                 return;
             }
 
+            int numPlayers = 1;
+            PokerGame pokerGame(numPlayers);
+
             switch (choice) {
-                case '0':
-                case '4':
-                    send(clientSocket, "Exiting lobby. Goodbye!\n", 24, 0);
-                    return;
-                case '1':
-                    send(clientSocket, "Starting the game. Get ready!\n", 30, 0);
-                    break;
-                case '2':
-                    send(clientSocket, "Game Mode is under development.\n", 33, 0);
-                    break;
-                case '3':
-                    Rules(clientSocket);
-                    break;
-                default:
-                    send(clientSocket, "Invalid input. Try again.\n", 26, 0);
-                    break; 
+            case '0':
+            case '4':
+                send(clientSocket, "Exiting lobby. Goodbye!\n", 24, 0);
+                return;
+            case '1':
+                send(clientSocket, "Starting the game. Get ready!\n", 30, 0);
+                pokerGame.StartGame(clientSocket);
+                break;
+            case '2':
+                send(clientSocket, "Game Mode is under development.\n", 33, 0);
+                break;
+            case '3':
+                Rules(clientSocket);
+                break;
+            default:
+                send(clientSocket, "Invalid input. Try again.\n", 26, 0);
+                break;
             }
         }
     }
 
-    void Rules(SOCKET clientSocket) override {
+    void Rules(SOCKET clientSocket) {
         string rules =
             "Game Rules:\n"
             "1. Play fair.\n"
@@ -71,6 +66,6 @@ public:
         send(clientSocket, rules.c_str(), rules.size(), 0);
 
         char choice;
-        recv(clientSocket, &choice, 1, 0); // Ожидаем ввод пользователя, чтобы вернуться в главное меню
+        recv(clientSocket, &choice, 1, 0);
     }
 };
