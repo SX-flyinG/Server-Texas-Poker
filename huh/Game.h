@@ -1,98 +1,76 @@
-class Player {
-private:
-    string name;  // Имя игрока
-    int money;    // Количество денег у игрока
-    vector<Card> hand;  // Рука игрока (карты)
-
-public:
-    // Конструктор игрока
-    Player(string n) {
-        name = n;
-        money = 1000;
-    }
-
-    // Добавление карты в руку игрока
-    void addCardToHand(const Card& card) {
-        hand.push_back(card);
-    }
-
-    // Сбрасывание карт руки игрока
-    void clearHand() {
-        hand.clear();
-    }
-
-    // Получение имени игрока
-    string getName() const {
-        return name;
-    }
-
-    // Получение денег игрока
-    int getMoney() const {
-        return money;
-    }
-
-    // Уменьшение денег игрока (ставка)
-    void betMoney(int amount) {
-        money -= amount;
-    }
-
-    // Получение карт игрока
-    vector<Card>& getHand() {
-        return hand;
-    }
-};
-
 class PokerGame {
 private:
-    vector<Player> players;  // Игроки
-    Deck deck;               // Колода
-    int pot;                 // Пот (банк)
-    
-public:
-    // Конструктор игры
-    PokerGame(SOCKET clientSocket) {
-        pot = 0;    
-    }
-            
-    // Добавление игрока в игру
-    void addPlayer(const Player& player) {
-        players.push_back(player);
-    }
+    CardDeck deck;                       // Колода карт
+    vector<vector<string>> players;      // Руки игроков
+    int numPlayers;                      // Количество игроков
+    string message
 
-    // Раздача карт игрокам
-    void dealCards() {
-        for (int i = 0; i < players.size(); i++) {
-            players[i].addCardToHand(deck.dealCard());
-            players[i].addCardToHand(deck.dealCard());
-        }
-    }
-
-    // Ставка игрока
-    void playerBet(int playerIndex, int amount) {
-        if (amount > 0) {
-            players[playerIndex].betMoney(amount);
-            pot += amount;
-        }
-    }
-
-    // Печать состояния игры
-    void printGameState() {
-        for (int i = 0; i < players.size(); i++) {
-            string stats = players[i].getName() + " has $" + players[i].getMoney() + " and holds ";
-            send(clientSocket , stats , sizeof(stats) , 0) ;
-            for (int j = 0; j < players[i].getHand().size(); j++) {
-                string hand =  players[i].getHand()[j].getCard()  +  " \n";
-                send(clientSocket , hand , sizeof(hand) , 0) ;
+    // Функция для раздачи карт игрокам
+    void DealInitialCards() {
+        for (int i = 0; i < 2; ++i) { // Раздаём по 2 карты каждому игроку
+            for (int j = 0; j < numPlayers; ++j) {
+                players[j].push_back(deck.DealCard());
             }
         }
-        string bankPot =  "Current pot: $" + pot + "\n";
-        send(clientSocket , bankPot , sizeof(bankPot) , 0) ;
     }
 
-    // Начало игры
-    void startGame() {
-        // Раздача карт
-        dealCards();
-        printGameState();
+    // Отображение рук игроков
+    void ShowAllHands(SOCKET clientSocket) const {
+        for (int i = 0; i < numPlayers; ++i) {
+            message =  "Player " + i + 1 + "'s hand: ";
+            send(clientSocket , message , sizeof(message) , 0);
+            for (const auto& card : players[i]) {
+                mesasge =  card + " | ";
+                send(clientSocket , message , sizeof(message) , 0);
+            }
+            message =  "\n;
+            send(clientSocket , message , sizeof(message) , 0);
+        }
+    }
+
+    // Выбор победителя
+    void DetermineWinner(SOCKET clientSocket) {
+        string bestHandType = "High Card";
+        int winnerIndex = 0;
+
+        for (int i = 0; i < numPlayers; ++i) {
+            PokerHand handEvaluator(players[i]);
+            string handType = handEvaluator.EvaluateHand();
+            message =  "Player " + (i + 1) + "'s hand type: " + handType + "\n";
+            send(clientSocket , message , sizeof(message) , 0);
+            // Сравниваем силу комбинации
+            if (CompareHands(handType, bestHandType)) {
+                bestHandType = handType;
+                winnerIndex = i;
+            }
+        }
+
+        message =  "The winner is Player " + (winnerIndex + 1) + " with a " + bestHandType + "!\n";
+        send(clientSocket , message , sizeof(message) , 0);
+    }
+
+    // Сравнение комбинаций
+    bool CompareHands(const string& hand1, const string& hand2) {
+        map<string, int> handRanks = {
+            {"High Card", 1}, {"One Pair", 2}, {"Two Pair", 3},
+            {"Three of a Kind", 4}, {"Straight", 5}, {"Flush", 6},
+            {"Full House", 7}, {"Four of a Kind", 8},
+            {"Straight Flush", 9}, {"Royal Flush", 10}
+        };
+        return handRanks[hand1] > handRanks[hand2];
+    }
+
+public:
+    PokerGame(int playersCount) : numPlayers(playersCount) {
+        players.resize(numPlayers);
+        srand(static_cast<unsigned>(time(0))); // Для перемешивания
+    }
+
+    // Запуск игры
+    void StartGame() {
+        deck.ShuffleDeck();
+        DealInitialCards();
+        ShowAllHands();
+        DetermineWinner();
     }
 };
