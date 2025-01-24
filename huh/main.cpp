@@ -82,8 +82,10 @@ int main() {
 
     // Handle client registration and logiт
     registration.reg(clientSocket);
-        
-    lobby.MainLobby(clientSocket);
+    while(true)
+    {
+        lobby.MainLobby(clientSocket);
+    }
 
     // Start Poker Game
     // Assuming a game with 1 players for simplicity

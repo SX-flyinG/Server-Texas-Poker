@@ -6,7 +6,6 @@ public:
         int numPlayers = 1;
         PokerGame pokerGame(numPlayers);
         char choice;
-        while (true) {
             string menu =
                 "\t\t\t####  #       #####  #####   #  #  \n"
                 "\t\t\t#  #  #       #   #  #       # #   \n"
@@ -20,9 +19,8 @@ public:
                 "\t\t\t     #  #   #  #       # #   \n"
                 "\t\t\t######  #   #  #####   #  #  \n"
                 "\n1 - Start Game\n"
-                "2 - Game Mode\n"
-                "3 - Rules\n"
-                "0,4 - Exit\n"
+                "2 - Rules\n"
+                "0,3 - Exit\n"
                 "Enter your choice: ";
 
             send(clientSocket, menu.c_str(), menu.size(), 0);
@@ -37,7 +35,7 @@ public:
 
             switch (choice) {
             case '0':
-            case '4':
+            case '3':
                 send(clientSocket, "Exiting lobby. Goodbye!\n", 24, 0);
                 return;
             case '1':
@@ -45,16 +43,12 @@ public:
                 pokerGame.StartGame(clientSocket);
                 break;
             case '2':
-                send(clientSocket, "Game Mode is under development.\n", 33, 0);
-                break;
-            case '3':
                 Rules(clientSocket);
                 break;
             default:
                 send(clientSocket, "Invalid input. Try again.\n", 26, 0);
                 break;
             }
-        }
     }
 
     void Rules(SOCKET clientSocket) {
@@ -69,5 +63,5 @@ public:
 
         char choice;
         recv(clientSocket, &choice, 1, 0);
-    }
+    } 
 };
