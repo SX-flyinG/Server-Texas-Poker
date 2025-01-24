@@ -114,14 +114,33 @@ public:
 
 	// Запуск игры
 	void StartGame(SOCKET clientSocket) {
-		// Перемешивание колоды и начало нового раунда
-		deck.ShuffleDeck();
-		DealInitialCards();
-		ShowAllHands(clientSocket);
-		PlayerBets(clientSocket); 
-		DetermineWinner(clientSocket);
-		for (int i = 0; i < numPlayers; ++i) {
-			players[i].clear();
+		string continueGame = "yes";
+		while (continueGame == "yes") {
+			deck.ShuffleDeck();         // Перемешивание колоды
+			DealInitialCards();         // Раздача карт
+			ShowAllHands(clientSocket); // Показать руки игроков
+			PlayerBets(clientSocket);   // Ставки игроков
+			DetermineWinner(clientSocket); // Определить победителя
+
+			// Очистить руки игроков для следующего раунда
+			for (int i = 0; i < numPlayers; ++i) {
+				players[i].clear();
+			}
+
+			// Спросить клиента, хочет ли он продолжить
+			string message = "Do you want to play another round? (yes/no)\n";
+			send(clientSocket, message.c_str(), message.size(), 0);
+
+			char buffer[16] = { 0 };
+			int received = recv(clientSocket, buffer, sizeof(buffer) - 1, 0);
+			if (received > 0) {
+				buffer[received] = '\0';
+				continueGame = string(buffer);
+			}
+			else {
+				cerr << "Error: Failed to receive response from client.\n";
+				break;
+			}
 		}
 	}
 };
